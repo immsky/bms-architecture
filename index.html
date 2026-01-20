@@ -1,1033 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive BMS IoT Architecture</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .flowchart-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
-            padding: 40px;
-            max-width: 1300px;
-            width: 100%;
-            overflow-x: auto;
-            animation: slideIn 0.8s ease-out;
-        }
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .header-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 50px;
-            border-radius: 15px;
-            margin-bottom: 40px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        .header-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
-            animation: shimmer 3s infinite;
-        }
-        @keyframes shimmer {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
-        .main-title {
-            font-size: 42px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            animation: fadeInDown 0.8s ease-out;
-        }
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .subtitle {
-            font-size: 20px;
-            margin-bottom: 25px;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
-            background: linear-gradient(90deg, #FFD700, #FFA500);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
-        }
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .description {
-            font-size: 14px;
-            line-height: 1.8;
-            max-width: 900px;
-            margin: 0 auto;
-            opacity: 0.95;
-            animation: fadeIn 0.8s ease-out 0.4s both;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .description p {
-            margin-bottom: 12px;
-        }
-        .description strong {
-            color: #FFD700;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 40px;
-            font-size: 28px;
-            animation: fadeIn 0.8s ease-out 0.6s both;
-        }
-        .flowchart {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            align-items: center;
-        }
-        .row {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 30px;
-            align-items: center;
-            flex-wrap: wrap;
-            width: 100%;
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-        .row:nth-child(2) { animation-delay: 0.7s; }
-        .row:nth-child(4) { animation-delay: 0.9s; }
-        .row:nth-child(6) { animation-delay: 1.1s; }
-        .row:nth-child(8) { animation-delay: 1.3s; }
-        .row:nth-child(10) { animation-delay: 1.5s; }
-        .row:nth-child(12) { animation-delay: 1.7s; }
-        .row:nth-child(14) { animation-delay: 1.9s; }
-        .box {
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: bold;
-            min-width: 140px;
-            position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border: 3px solid;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 80px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-            filter: brightness(1.1);
-        }
-        .box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), transparent);
-            border-radius: 12px;
-            pointer-events: none;
-        }
-        /* Device boxes */
-        .device-box {
-            background: linear-gradient(135deg, #FFB347 0%, #FF8C00 100%);
-            color: white;
-            border-color: #FF6B00;
-            font-size: 13px;
-            min-width: 110px;
-            animation: pulse-device 2s infinite;
-        }
-        @keyframes pulse-device {
-            0%, 100% { box-shadow: 0 4px 15px rgba(255,107,0,0.3); }
-            50% { box-shadow: 0 4px 25px rgba(255,107,0,0.6); }
-        }
-        /* JACE/Gateway boxes */
-        .gateway-box {
-            background: linear-gradient(135deg, #87CEEB 0%, #4A90E2 100%);
-            color: white;
-            border-color: #2E5C8A;
-            font-size: 14px;
-            min-width: 130px;
-            animation: pulse-gateway 2.2s infinite;
-        }
-        @keyframes pulse-gateway {
-            0%, 100% { box-shadow: 0 4px 15px rgba(42,144,226,0.3); }
-            50% { box-shadow: 0 4px 25px rgba(42,144,226,0.6); }
-        }
-        /* Node-RED boxes */
-        .nodered-box {
-            background: linear-gradient(135deg, #90EE90 0%, #228B22 100%);
-            color: white;
-            border-color: #1a6b1a;
-            font-size: 14px;
-            min-width: 130px;
-            animation: pulse-nodered 2.4s infinite;
-        }
-        @keyframes pulse-nodered {
-            0%, 100% { box-shadow: 0 4px 15px rgba(34,139,34,0.3); }
-            50% { box-shadow: 0 4px 25px rgba(34,139,34,0.6); }
-        }
-        /* Protocol boxes */
-        .protocol-box {
-            background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
-            color: white;
-            border-color: #C71585;
-            font-size: 13px;
-            min-width: 110px;
-            animation: pulse-protocol 2.6s infinite;
-        }
-        @keyframes pulse-protocol {
-            0%, 100% { box-shadow: 0 4px 15px rgba(199,21,133,0.3); }
-            50% { box-shadow: 0 4px 25px rgba(199,21,133,0.6); }
-        }
-        /* Cloud boxes */
-        .cloud-box {
-            background: linear-gradient(135deg, #DDA0DD 0%, #9370DB 100%);
-            color: white;
-            border-color: #663399;
-            font-size: 13px;
-            min-width: 120px;
-            animation: pulse-cloud 2.8s infinite;
-        }
-        @keyframes pulse-cloud {
-            0%, 100% { box-shadow: 0 4px 15px rgba(102,51,153,0.3); }
-            50% { box-shadow: 0 4px 25px rgba(102,51,153,0.6); }
-        }
-        /* App/API boxes */
-        .app-box {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #333;
-            border-color: #CC8400;
-            font-size: 14px;
-            min-width: 130px;
-            animation: pulse-app 3s infinite;
-        }
-        @keyframes pulse-app {
-            0%, 100% { box-shadow: 0 4px 15px rgba(255,165,0,0.3); }
-            50% { box-shadow: 0 4px 25px rgba(255,165,0,0.6); }
-        }
-        /* Mobile boxes */
-        .mobile-box {
-            background: linear-gradient(135deg, #00CED1 0%, #1E90FF 100%);
-            color: white;
-            border-color: #104E8B;
-            font-size: 13px;
-            min-width: 110px;
-            animation: pulse-mobile 3.2s infinite;
-        }
-        @keyframes pulse-mobile {
-            0%, 100% { box-shadow: 0 4px 15px rgba(30,144,255,0.3); }
-            50% { box-shadow: 0 4px 25px rgba(30,144,255,0.6); }
-        }
-        .arrow {
-            font-size: 40px;
-            color: #667eea;
-            font-weight: bold;
-            margin: 20px 0;
-            animation: bounce 1.5s infinite, fadeIn 0.8s ease-out;
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(10px); }
-        }
-        .horizontal-arrow {
-            font-size: 30px;
-            color: #667eea;
-            margin: 0 10px;
-            font-weight: bold;
-            animation: slideRight 1s ease-in-out infinite;
-        }
-        @keyframes slideRight {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(5px); }
-        }
-        .section-title {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 30px;
-            margin: 30px 0 15px 0;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            width: 100%;
-            text-align: left;
-            animation: slideInLeft 0.8s ease-out;
-        }
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        .emoji {
-            font-size: 24px;
-            margin-bottom: 8px;
-            animation: bounce-emoji 2s infinite;
-        }
-        @keyframes bounce-emoji {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-        .description {
-            font-size: 11px;
-            margin-top: 5px;
-            opacity: 0.9;
-        }
-        .success-message {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
-            color: white;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            animation: slideIn 0.8s ease-out 2.5s both;
-        }
-        .tooltip {
-            position: absolute;
-            background: #333;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 10px;
-            white-space: nowrap;
-            display: none;
-            z-index: 1000;
-        }
-        .box:hover .tooltip {
-            display: block;
-        }
-        /* Responsive - Tablet */
-        @media (max-width: 768px) {
-            .flowchart-container {
-                padding: 20px;
-                border-radius: 15px;
-                margin: 10px;
-            }
-            .header-section {
-                padding: 25px;
-                margin-bottom: 25px;
-            }
-            .main-title {
-                font-size: 24px;
-                margin-bottom: 10px;
-            }
-            .subtitle {
-                font-size: 14px;
-                margin-bottom: 15px;
-            }
-            .description {
-                font-size: 12px;
-                line-height: 1.6;
-            }
-            .description p {
-                margin-bottom: 8px;
-            }
-            h1 {
-                font-size: 20px;
-                margin-bottom: 20px;
-            }
-            .section-title {
-                font-size: 14px;
-                padding: 12px 20px;
-                margin: 20px 0 10px 0;
-            }
-            .box {
-                min-width: 95px;
-                font-size: 10px;
-                padding: 12px;
-                min-height: 65px;
-                margin: 5px;
-            }
-            .emoji {
-                font-size: 20px;
-                margin-bottom: 4px;
-            }
-            .description {
-                font-size: 9px;
-                margin-top: 3px;
-            }
-            .arrow {
-                font-size: 28px;
-                margin: 12px 0;
-            }
-            .horizontal-arrow {
-                font-size: 24px;
-                margin: 0 8px;
-            }
-            .row {
-                gap: 10px;
-                margin-bottom: 20px;
-            }
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartBAS – Intelligent BMS IoT Architecture</title>
 
-        /* Responsive - Mobile Phone (Portrait & Landscape) */
-        @media (max-width: 480px) {
-            * {
-                margin: 0;
-                padding: 0;
-            }
-            body {
-                padding: 10px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            }
-            .flowchart-container {
-                padding: 15px;
-                border-radius: 12px;
-                margin: 5px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            }
-            .header-section {
-                padding: 20px;
-                margin-bottom: 20px;
-                border-radius: 10px;
-            }
-            .header-content {
-                position: relative;
-                z-index: 1;
-            }
-            .main-title {
-                font-size: 18px;
-                margin-bottom: 8px;
-                line-height: 1.3;
-            }
-            .subtitle {
-                font-size: 12px;
-                margin-bottom: 12px;
-                line-height: 1.2;
-            }
-            .description {
-                font-size: 11px;
-                line-height: 1.5;
-                text-align: left;
-            }
-            .description p {
-                margin-bottom: 6px;
-            }
-            h1 {
-                font-size: 18px;
-                margin-bottom: 15px;
-                text-align: center;
-            }
-            .section-title {
-                font-size: 12px;
-                padding: 10px 15px;
-                margin: 15px 0 10px 0;
-                border-left: 4px solid;
-            }
-            .row {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
-                margin-bottom: 15px;
-                align-items: stretch;
-                width: 100%;
-            }
-            .box {
-                width: 100%;
-                min-width: auto;
-                font-size: 10px;
-                padding: 12px;
-                min-height: 60px;
-                border-radius: 8px;
-                border: 2px solid;
-            }
-            .emoji {
-                font-size: 18px;
-                margin-bottom: 3px;
-            }
-            .description {
-                font-size: 8px;
-                margin-top: 2px;
-                line-height: 1.3;
-            }
-            .arrow {
-                font-size: 24px;
-                margin: 10px 0;
-                animation: bounce 1.5s infinite;
-            }
-            .horizontal-arrow {
-                display: none;
-            }
-            .success-message {
-                font-size: 13px;
-                padding: 15px;
-                margin-top: 20px;
-            }
-            .success-message span {
-                font-size: 10px !important;
-            }
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-        /* Extra Small Mobile */
-        @media (max-width: 320px) {
-            .main-title {
-                font-size: 16px;
-            }
-            .subtitle {
-                font-size: 11px;
-            }
-            h1 {
-                font-size: 16px;
-            }
-            .section-title {
-                font-size: 11px;
-            }
-            .box {
-                font-size: 9px;
-                padding: 10px;
-                min-height: 55px;
-            }
-            .emoji {
-                font-size: 16px;
-            }
-        }
-    </style>
+/* ===== GLOBAL THEME (GREY) ===== */
+body{
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+    background:linear-gradient(135deg,#2f2f2f,#5a5a5a);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.flowchart-container{
+    background:#f4f4f4;
+    border-radius:18px;
+    box-shadow:0 25px 70px rgba(0,0,0,0.4);
+    padding:40px;
+    max-width:1300px;
+    width:100%;
+    overflow-x:auto;
+}
+
+/* ===== HEADER ===== */
+.header-section{
+    background:linear-gradient(135deg,#3a3a3a,#6a6a6a);
+    color:white;
+    padding:45px;
+    border-radius:15px;
+    margin-bottom:35px;
+    text-align:center;
+}
+
+.main-title{
+    font-size:40px;
+    font-weight:bold;
+    margin-bottom:12px;
+}
+
+.subtitle{
+    font-size:18px;
+    margin-bottom:20px;
+    color:#dcdcdc;
+    font-weight:600;
+}
+
+.description{
+    font-size:14px;
+    line-height:1.8;
+    max-width:900px;
+    margin:auto;
+    opacity:0.95;
+}
+
+/* ===== SECTION TITLES ===== */
+.section-title{
+    background:linear-gradient(90deg,#444,#777);
+    color:white;
+    padding:14px 28px;
+    margin:28px 0 15px;
+    border-radius:5px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+/* ===== FLOW ===== */
+.flowchart{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.row{
+    display:flex;
+    gap:18px;
+    justify-content:center;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+/* ===== BOXES ===== */
+.box{
+    padding:18px;
+    border-radius:12px;
+    text-align:center;
+    font-weight:bold;
+    min-width:130px;
+    min-height:80px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 6px 18px rgba(0,0,0,0.2);
+    transition:0.3s;
+    border:2px solid #555;
+}
+
+.box:hover{
+    transform:translateY(-8px);
+}
+
+/* ===== CATEGORY COLORS (GREY SCALE) ===== */
+.device-box{background:#b0b0b0;color:#222}
+.gateway-box{background:#9c9c9c;color:white}
+.nodered-box{background:#7f7f7f;color:white}
+.protocol-box{background:#a5a5a5;color:#222}
+.cloud-box{background:#8c8c8c;color:white}
+.app-box{background:#d0d0d0;color:#222}
+.mobile-box{background:#6f6f6f;color:white}
+
+/* ===== ICONS & TEXT ===== */
+.emoji{font-size:22px;margin-bottom:6px}
+.description{font-size:11px;opacity:0.85}
+
+/* ===== ARROWS ===== */
+.arrow{
+    font-size:36px;
+    color:#555;
+    margin:15px 0;
+}
+
+.horizontal-arrow{
+    font-size:28px;
+    color:#555;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    margin-top:40px;
+    padding:18px;
+    background:#2e2e2e;
+    color:#cfcfcf;
+    text-align:center;
+    border-radius:10px;
+    font-size:14px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+    .main-title{font-size:26px}
+    .subtitle{font-size:14px}
+    .box{min-width:100px;font-size:11px}
+    .horizontal-arrow{display:none}
+    .row{flex-direction:column}
+}
+</style>
 </head>
+
 <body>
-    <div class="flowchart-container">
-        <div class="header-section">
-            <div class="header-content">
-                <div class="main-title">🏢 INTELLIGENT BUILDING MANAGEMENT SYSTEM</div>
-                <div class="subtitle">⚡ Full Interactive BMS + AI Dashboard + IoT Control Platform ⚡</div>
-                <div class="description">
-                    <p>
-                        <strong>🚀 Next-Generation Enterprise IoT Architecture</strong> – A comprehensive, production-ready Building Management System designed for intelligent automation and real-time control. This architecture seamlessly integrates multi-brand BACnet devices, intelligent controllers, and protocol converters into a unified cloud platform with advanced analytics and mobile accessibility.
-                    </p>
-                    <p>
-                        <strong>✨ Key Capabilities:</strong> Real-time sensor monitoring • Predictive analytics • Automated device control • Multi-protocol integration • Secure cloud deployment • AI-powered insights for optimized building operations.
-                    </p>
-                    <p>
-                        <strong>✅ Ready to Deploy:</strong> Complete end-to-end solution from field devices to enterprise dashboard with scalable infrastructure, enterprise-grade security, and 24/7 monitoring capabilities.
-                    </p>
-                </div>
-            </div>
-        </div>
+<div class="flowchart-container">
 
-        <h1>🏗️ Full Scale High Level IoT Architecture</h1>
-        
-        <div class="flowchart">
-            <!-- STEP 1: DEVICES -->
-            <div class="section-title">📍 Layer 1: BMS Physical Devices & Sensors (BACnet/IP Protocol)</div>
-            <div class="row">
-                <div class="box device-box">
-                    <div class="emoji">🌡️</div>
-                    Temperature<br>
-                    <div class="description">DPT 9.001</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">💨</div>
-                    Duct Pressure<br>
-                    <div class="description">DPT 9.007</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">💧</div>
-                    Humidity<br>
-                    <div class="description">DPT 9.007</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">🔊</div>
-                    CO2 Level<br>
-                    <div class="description">PPM Sensor</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box device-box">
-                    <div class="emoji">🌊</div>
-                    Water Flow<br>
-                    <div class="description">Flow Meter</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">⚡</div>
-                    Power/Energy<br>
-                    <div class="description">kWh Meter</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">💡</div>
-                    Occupancy<br>
-                    <div class="description">PIR Sensor</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">🪟</div>
-                    Window Contact<br>
-                    <div class="description">DPT 1.001</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box device-box">
-                    <div class="emoji">🚪</div>
-                    Door Switch<br>
-                    <div class="description">Contact Sensor</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">☀️</div>
-                    Light Level<br>
-                    <div class="description">Lux Meter</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">🎛️</div>
-                    Actuators<br>
-                    <div class="description">Valve/Damper</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">💨</div>
-                    VAV Unit<br>
-                    <div class="description">Variable Air Volume</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box device-box">
-                    <div class="emoji">🔥</div>
-                    Boiler<br>
-                    <div class="description">Temperature Control</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">❄️</div>
-                    Chiller<br>
-                    <div class="description">Cooling Unit</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">🌬️</div>
-                    Fan Coil<br>
-                    <div class="description">FCU Unit</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box device-box">
-                    <div class="emoji">🔌</div>
-                    Pump Motor<br>
-                    <div class="description">Speed Control</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 2: JACE & GATEWAYS -->
-            <div class="section-title">🔌 Layer 2: BACnet Gateways, ProtoConverters & Intelligent Controllers</div>
-            <div class="row">
-                <div class="box gateway-box">
-                    <div class="emoji">🏢</div>
-                    Honeywell<br>
-                    <div class="description">JACE 7000/8000<br>JACE 10</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">⚡</div>
-                    Siemens<br>
-                    <div class="description">KNX/BACnet<br>ProtoConverter</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">🔧</div>
-                    Schneider<br>
-                    <div class="description">EcoStruxure<br>Gateway</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box gateway-box">
-                    <div class="emoji">🌐</div>
-                    Johnson Controls<br>
-                    <div class="description">BACnet Gateway<br>Controllers</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">🎛️</div>
-                    Trane/Ingersoll<br>
-                    <div class="description">Building<br>Controllers</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">📡</div>
-                    Carrier<br>
-                    <div class="description">BMS<br>Gateway</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box gateway-box">
-                    <div class="emoji">🔌</div>
-                    Delta<br>
-                    <div class="description">BACnet<br>Controller</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">🏗️</div>
-                    Alerton<br>
-                    <div class="description">BACnet Device<br>Server</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">💾</div>
-                    Contemporary<br>
-                    <div class="description">BACnet<br>Controllers</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box gateway-box">
-                    <div class="emoji">🔄</div>
-                    Honeywell IQ4<br>
-                    <div class="description">Intelligent<br>Controller 4.0</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">⚙️</div>
-                    Honeywell IQ5<br>
-                    <div class="description">Intelligent<br>Controller 5.0</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">📊</div>
-                    Trend Controllers<br>
-                    <div class="description">IQ4 / IQ5<br>Series</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box gateway-box">
-                    <div class="emoji">🌉</div>
-                    ProtoConverter<br>
-                    <div class="description">Protocol Bridge<br>Multi-Protocol</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">🔗</div>
-                    BACnet<br>Server<br>
-                    <div class="description">Central<br>Data Hub</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 3: NODE-RED -->
-            <div class="section-title">⚙️ Layer 3: Node-RED Integration & Processing</div>
-            <div class="row">
-                <div class="box nodered-box">
-                    <div class="emoji">⚙️</div>
-                    Node-RED<br>
-                    <div class="description">Read/Process Data</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box nodered-box">
-                    <div class="emoji">📡</div>
-                    MQTT Broker<br>
-                    <div class="description">Pub/Sub Messages</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box nodered-box">
-                    <div class="emoji">🔄</div>
-                    Data Transform<br>
-                    <div class="description">Logic & Routing</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 4: PROTOCOLS -->
-            <div class="section-title">📡 Layer 4: All Available Protocols for Node-RED</div>
-            <div class="row">
-                <div class="box protocol-box">
-                    <div class="emoji">🏢</div>
-                    BACnet/IP<br>
-                    <div class="description">Building Automation</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📨</div>
-                    MQTT<br>
-                    <div class="description">Pub/Sub Messaging</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🌐</div>
-                    REST/HTTP<br>
-                    <div class="description">HTTP Requests</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">⚡</div>
-                    WebSocket<br>
-                    <div class="description">Real-time Data</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">🔒</div>
-                    HTTPS/TLS<br>
-                    <div class="description">Secure Protocol</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📶</div>
-                    Modbus TCP/RTU<br>
-                    <div class="description">Industrial Protocol</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🔧</div>
-                    OPC UA<br>
-                    <div class="description">Interoperability</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🏠</div>
-                    KNX Protocol<br>
-                    <div class="description">Home Automation</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">📡</div>
-                    Zigbee<br>
-                    <div class="description">Wireless IoT</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📊</div>
-                    DNP3<br>
-                    <div class="description">Power Systems</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🌍</div>
-                    AMQP<br>
-                    <div class="description">Message Broker</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">☁️</div>
-                    CoAP<br>
-                    <div class="description">IoT Protocol</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">📋</div>
-                    JSON/XML<br>
-                    <div class="description">Data Format</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🔌</div>
-                    TCP/UDP Socket<br>
-                    <div class="description">Raw Socket</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">💻</div>
-                    SSH/Telnet<br>
-                    <div class="description">Remote Access</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🔐</div>
-                    MQTT Secure<br>
-                    <div class="description">MQTT over TLS</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">🎵</div>
-                    SNMP<br>
-                    <div class="description">Network Mgmt</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🔗</div>
-                    LonWorks<br>
-                    <div class="description">Control Network</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">⚙️</div>
-                    IEC 60870-5<br>
-                    <div class="description">Power Systems</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🌐</div>
-                    gRPC<br>
-                    <div class="description">RPC Framework</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">📱</div>
-                    LoRaWAN<br>
-                    <div class="description">Long Range IoT</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🛰️</div>
-                    NB-IoT/LTE-M<br>
-                    <div class="description">Cellular IoT</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📶</div>
-                    Bluetooth/BLE<br>
-                    <div class="description">Wireless</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📡</div>
-                    6LoWPAN<br>
-                    <div class="description">IPv6 over LoWPAN</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 5: CLOUD -->
-            <div class="section-title">☁️ Layer 5: Cloud Deployment Platforms</div>
-            <div class="row">
-                <div class="box cloud-box">
-                    <div class="emoji">☁️</div>
-                    AWS<br>
-                    <div class="description">EC2 + RDS + S3</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box cloud-box">
-                    <div class="emoji">☁️</div>
-                    Google Cloud<br>
-                    <div class="description">Compute + SQL</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box cloud-box">
-                    <div class="emoji">🐳</div>
-                    Docker<br>
-                    <div class="description">Containers</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 6: DATABASE & API -->
-            <div class="section-title">💾 Layer 6: Database & Application Layer</div>
-            <div class="row">
-                <div class="box app-box">
-                    <div class="emoji">💾</div>
-                    Database<br>
-                    <div class="description">PostgreSQL/MongoDB</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box app-box">
-                    <div class="emoji">⚡</div>
-                    Backend API<br>
-                    <div class="description">REST/WebSocket</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box app-box">
-                    <div class="emoji">📊</div>
-                    Dashboard<br>
-                    <div class="description">Real-time Data</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 7: MOBILE & WEB -->
-            <div class="section-title">📱 Layer 7: User Access - Mobile & Web Applications</div>
-            <div class="row">
-                <div class="box mobile-box">
-                    <div class="emoji">🍎</div>
-                    iOS App<br>
-                    <div class="description">Mobile Access</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box mobile-box">
-                    <div class="emoji">🤖</div>
-                    Android App<br>
-                    <div class="description">Mobile Access</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box mobile-box">
-                    <div class="emoji">🌐</div>
-                    Web Browser<br>
-                    <div class="description">Responsive Web</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box mobile-box">
-                    <div class="emoji">📲</div>
-                    Tablet App<br>
-                    <div class="description">Touch Interface</div>
-                </div>
-            </div>
-
-            <div class="arrow">✅</div>
-
-            <div class="success-message">
-                🎉 Complete Data Flow: Devices → JACE → Node-RED → Protocols → Cloud → API → Mobile/Web ✅<br>
-                <span style="font-size: 14px; margin-top: 10px; display: block; opacity: 0.9;">Enterprise-Grade BMS Ready for Production Deployment</span>
-            </div>
-        </div>
+<!-- ===== HEADER ===== -->
+<div class="header-section">
+    <div class="main-title">INTELLIGENT BUILDING MANAGEMENT SYSTEM</div>
+    <div class="subtitle">Enterprise BMS · IoT · Cloud · AI Integration</div>
+    <div class="description">
+        <p>
+            This complete Building Management System (BMS) architecture was <strong>designed and created by Mohammed Fahim</strong>,
+            showcasing an end-to-end enterprise-grade IoT solution for modern smart buildings.
+        </p>
+        <p>
+            The system demonstrates seamless integration of BACnet field devices, intelligent controllers,
+            Node-RED based middleware, multi-protocol communication, cloud deployment, and mobile/web visualization.
+        </p>
+        <p>
+            It represents a scalable, production-ready architecture suitable for commercial buildings,
+            hospitals, campuses, and industrial facilities.
+        </p>
     </div>
+</div>
+
+<h1 style="text-align:center;margin-bottom:30px;color:#333">
+🏗️ High-Level BMS IoT Architecture
+</h1>
+
+<div class="flowchart">
+
+<div class="section-title">Layer 1: Physical Devices (BACnet/IP)</div>
+<div class="row">
+    <div class="box device-box"><div class="emoji">🌡️</div>Temperature<div class="description">Sensors</div></div>
+    <div class="box device-box"><div class="emoji">💨</div>Pressure<div class="description">Duct</div></div>
+    <div class="box device-box"><div class="emoji">💧</div>Humidity<div class="description">RH</div></div>
+    <div class="box device-box"><div class="emoji">🔊</div>CO₂<div class="description">PPM</div></div>
+</div>
+
+<div class="arrow">⬇️</div>
+
+<div class="section-title">Layer 2: Gateways & Controllers</div>
+<div class="row">
+    <div class="box gateway-box"><div class="emoji">🏢</div>JACE<div class="description">Niagara</div></div>
+    <div class="box gateway-box"><div class="emoji">🔧</div>Controllers<div class="description">BACnet</div></div>
+    <div class="box gateway-box"><div class="emoji">🔄</div>ProtoConverter<div class="description">Multi-Protocol</div></div>
+</div>
+
+<div class="arrow">⬇️</div>
+
+<div class="section-title">Layer 3: Node-RED Middleware</div>
+<div class="row">
+    <div class="box nodered-box"><div class="emoji">⚙️</div>Node-RED<div class="description">Logic</div></div>
+    <div class="box nodered-box"><div class="emoji">📡</div>MQTT<div class="description">Broker</div></div>
+</div>
+
+<div class="arrow">⬇️</div>
+
+<div class="section-title">Layer 4: Cloud & Data</div>
+<div class="row">
+    <div class="box cloud-box"><div class="emoji">☁️</div>AWS / GCP<div class="description">Cloud</div></div>
+    <div class="box app-box"><div class="emoji">💾</div>Database<div class="description">SQL / NoSQL</div></div>
+</div>
+
+<div class="arrow">⬇️</div>
+
+<div class="section-title">Layer 5: Applications</div>
+<div class="row">
+    <div class="box mobile-box"><div class="emoji">📱</div>Mobile App</div>
+    <div class="box mobile-box"><div class="emoji">🌐</div>Web Dashboard</div>
+</div>
+
+</div>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+    © 2026 SmartBAS. All Rights Reserved.<br>
+    Architecture & Design owned by <strong>SmartBAS</strong>.
+</div>
+
+</div>
 </body>
 </html>
