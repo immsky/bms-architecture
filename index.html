@@ -12,7 +12,7 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -20,14 +20,15 @@
             padding: 20px;
         }
         .flowchart-container {
-            background: white;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             border-radius: 20px;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+            box-shadow: 0 30px 80px rgba(139, 0, 0, 0.5), 0 0 100px rgba(220, 20, 60, 0.3);
             padding: 40px;
             max-width: 1300px;
             width: 100%;
             overflow-x: auto;
             animation: slideIn 0.8s ease-out;
+            border: 2px solid #8B0000;
         }
         @keyframes slideIn {
             from {
@@ -40,7 +41,7 @@
             }
         }
         .header-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%);
             color: white;
             padding: 50px;
             border-radius: 15px;
@@ -48,6 +49,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 10px 40px rgba(220, 20, 60, 0.4);
         }
         .header-section::before {
             content: '';
@@ -72,6 +74,7 @@
             font-weight: bold;
             margin-bottom: 15px;
             animation: fadeInDown 0.8s ease-out;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
         }
         @keyframes fadeInDown {
             from {
@@ -120,12 +123,21 @@
         .description strong {
             color: #FFD700;
         }
+        .creator-tag {
+            font-size: 16px;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
         h1 {
             text-align: center;
-            color: #333;
+            color: #DC143C;
             margin-bottom: 40px;
             font-size: 28px;
             animation: fadeIn 0.8s ease-out 0.6s both;
+            text-shadow: 0 0 20px rgba(220, 20, 60, 0.5);
         }
         .flowchart {
             display: flex;
@@ -169,7 +181,7 @@
         }
         .box:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 40px rgba(220, 20, 60, 0.4);
             filter: brightness(1.1);
         }
         .box::before {
@@ -183,7 +195,6 @@
             border-radius: 12px;
             pointer-events: none;
         }
-        /* Device boxes */
         .device-box {
             background: linear-gradient(135deg, #FFB347 0%, #FF8C00 100%);
             color: white;
@@ -196,7 +207,6 @@
             0%, 100% { box-shadow: 0 4px 15px rgba(255,107,0,0.3); }
             50% { box-shadow: 0 4px 25px rgba(255,107,0,0.6); }
         }
-        /* JACE/Gateway boxes */
         .gateway-box {
             background: linear-gradient(135deg, #87CEEB 0%, #4A90E2 100%);
             color: white;
@@ -209,7 +219,6 @@
             0%, 100% { box-shadow: 0 4px 15px rgba(42,144,226,0.3); }
             50% { box-shadow: 0 4px 25px rgba(42,144,226,0.6); }
         }
-        /* Node-RED boxes */
         .nodered-box {
             background: linear-gradient(135deg, #90EE90 0%, #228B22 100%);
             color: white;
@@ -222,7 +231,6 @@
             0%, 100% { box-shadow: 0 4px 15px rgba(34,139,34,0.3); }
             50% { box-shadow: 0 4px 25px rgba(34,139,34,0.6); }
         }
-        /* Protocol boxes */
         .protocol-box {
             background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
             color: white;
@@ -235,7 +243,6 @@
             0%, 100% { box-shadow: 0 4px 15px rgba(199,21,133,0.3); }
             50% { box-shadow: 0 4px 25px rgba(199,21,133,0.6); }
         }
-        /* Cloud boxes */
         .cloud-box {
             background: linear-gradient(135deg, #DDA0DD 0%, #9370DB 100%);
             color: white;
@@ -248,7 +255,6 @@
             0%, 100% { box-shadow: 0 4px 15px rgba(102,51,153,0.3); }
             50% { box-shadow: 0 4px 25px rgba(102,51,153,0.6); }
         }
-        /* App/API boxes */
         .app-box {
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             color: #333;
@@ -261,7 +267,6 @@
             0%, 100% { box-shadow: 0 4px 15px rgba(255,165,0,0.3); }
             50% { box-shadow: 0 4px 25px rgba(255,165,0,0.6); }
         }
-        /* Mobile boxes */
         .mobile-box {
             background: linear-gradient(135deg, #00CED1 0%, #1E90FF 100%);
             color: white;
@@ -276,28 +281,34 @@
         }
         .arrow {
             font-size: 40px;
-            color: #667eea;
+            color: #FF6347;
             font-weight: bold;
             margin: 20px 0;
-            animation: bounce 1.5s infinite, fadeIn 0.8s ease-out;
+            animation: bounce 1.5s infinite, glow 2s infinite;
+            text-shadow: 0 0 20px rgba(255, 99, 71, 0.8);
         }
         @keyframes bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(10px); }
         }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px rgba(255, 99, 71, 0.8); }
+            50% { text-shadow: 0 0 30px rgba(255, 99, 71, 1); }
+        }
         .horizontal-arrow {
             font-size: 30px;
-            color: #667eea;
+            color: #FF6347;
             margin: 0 10px;
             font-weight: bold;
-            animation: slideRight 1s ease-in-out infinite;
+            animation: slideRight 1s ease-in-out infinite, glow 2s infinite;
+            text-shadow: 0 0 15px rgba(255, 99, 71, 0.8);
         }
         @keyframes slideRight {
             0%, 100% { transform: translateX(0); }
             50% { transform: translateX(5px); }
         }
         .section-title {
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(90deg, #8B0000 0%, #DC143C 50%, #8B0000 100%);
             color: white;
             padding: 15px 30px;
             margin: 30px 0 15px 0;
@@ -307,6 +318,8 @@
             width: 100%;
             text-align: left;
             animation: slideInLeft 0.8s ease-out;
+            box-shadow: 0 5px 20px rgba(220, 20, 60, 0.4);
+            border: 1px solid #FF6347;
         }
         @keyframes slideInLeft {
             from {
@@ -336,28 +349,37 @@
             text-align: center;
             margin-top: 40px;
             padding: 20px;
-            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
             color: white;
             border-radius: 10px;
             font-size: 16px;
             font-weight: bold;
             animation: slideIn 0.8s ease-out 2.5s both;
+            box-shadow: 0 10px 40px rgba(220, 20, 60, 0.5);
         }
-        .tooltip {
-            position: absolute;
-            background: #333;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 5px;
-            font-size: 10px;
-            white-space: nowrap;
-            display: none;
-            z-index: 1000;
+        .copyright-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 10px;
+            border: 2px solid #8B0000;
+            box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
         }
-        .box:hover .tooltip {
-            display: block;
+        .copyright-footer p {
+            color: #DC143C;
+            font-size: 14px;
+            margin: 8px 0;
+            font-weight: bold;
         }
-        /* Responsive - Tablet */
+        .copyright-footer .company {
+            color: #FFD700;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
         @media (max-width: 768px) {
             .flowchart-container {
                 padding: 20px;
@@ -382,6 +404,10 @@
             }
             .description p {
                 margin-bottom: 8px;
+            }
+            .creator-tag {
+                font-size: 13px;
+                padding: 12px;
             }
             h1 {
                 font-size: 20px;
@@ -419,9 +445,14 @@
                 gap: 10px;
                 margin-bottom: 20px;
             }
+            .copyright-footer p {
+                font-size: 12px;
+            }
+            .copyright-footer .company {
+                font-size: 15px;
+            }
         }
 
-        /* Responsive - Mobile Phone (Portrait & Landscape) */
         @media (max-width: 480px) {
             * {
                 margin: 0;
@@ -429,22 +460,16 @@
             }
             body {
                 padding: 10px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             }
             .flowchart-container {
                 padding: 15px;
                 border-radius: 12px;
                 margin: 5px;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             }
             .header-section {
                 padding: 20px;
                 margin-bottom: 20px;
                 border-radius: 10px;
-            }
-            .header-content {
-                position: relative;
-                z-index: 1;
             }
             .main-title {
                 font-size: 18px;
@@ -464,16 +489,19 @@
             .description p {
                 margin-bottom: 6px;
             }
+            .creator-tag {
+                font-size: 11px;
+                padding: 10px;
+                margin-top: 15px;
+            }
             h1 {
                 font-size: 18px;
                 margin-bottom: 15px;
-                text-align: center;
             }
             .section-title {
                 font-size: 12px;
                 padding: 10px 15px;
                 margin: 15px 0 10px 0;
-                border-left: 4px solid;
             }
             .row {
                 display: flex;
@@ -504,7 +532,6 @@
             .arrow {
                 font-size: 24px;
                 margin: 10px 0;
-                animation: bounce 1.5s infinite;
             }
             .horizontal-arrow {
                 display: none;
@@ -514,12 +541,19 @@
                 padding: 15px;
                 margin-top: 20px;
             }
-            .success-message span {
-                font-size: 10px !important;
+            .copyright-footer {
+                padding: 15px;
+                margin-top: 25px;
+            }
+            .copyright-footer p {
+                font-size: 10px;
+                margin: 5px 0;
+            }
+            .copyright-footer .company {
+                font-size: 13px;
             }
         }
 
-        /* Extra Small Mobile */
         @media (max-width: 320px) {
             .main-title {
                 font-size: 16px;
@@ -560,6 +594,9 @@
                     <p>
                         <strong>✅ Ready to Deploy:</strong> Complete end-to-end solution from field devices to enterprise dashboard with scalable infrastructure, enterprise-grade security, and 24/7 monitoring capabilities.
                     </p>
+                </div>
+                <div class="creator-tag">
+                    ⭐ Architected & Created by <strong style="color: #FFD700;">Mohammed Fahim</strong> ⭐
                 </div>
             </div>
         </div>
@@ -735,299 +772,4 @@
                 <div class="box gateway-box">
                     <div class="emoji">🔄</div>
                     Honeywell IQ4<br>
-                    <div class="description">Intelligent<br>Controller 4.0</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">⚙️</div>
-                    Honeywell IQ5<br>
-                    <div class="description">Intelligent<br>Controller 5.0</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">📊</div>
-                    Trend Controllers<br>
-                    <div class="description">IQ4 / IQ5<br>Series</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box gateway-box">
-                    <div class="emoji">🌉</div>
-                    ProtoConverter<br>
-                    <div class="description">Protocol Bridge<br>Multi-Protocol</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box gateway-box">
-                    <div class="emoji">🔗</div>
-                    BACnet<br>Server<br>
-                    <div class="description">Central<br>Data Hub</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 3: NODE-RED -->
-            <div class="section-title">⚙️ Layer 3: Node-RED Integration & Processing</div>
-            <div class="row">
-                <div class="box nodered-box">
-                    <div class="emoji">⚙️</div>
-                    Node-RED<br>
-                    <div class="description">Read/Process Data</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box nodered-box">
-                    <div class="emoji">📡</div>
-                    MQTT Broker<br>
-                    <div class="description">Pub/Sub Messages</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box nodered-box">
-                    <div class="emoji">🔄</div>
-                    Data Transform<br>
-                    <div class="description">Logic & Routing</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 4: PROTOCOLS -->
-            <div class="section-title">📡 Layer 4: All Available Protocols for Node-RED</div>
-            <div class="row">
-                <div class="box protocol-box">
-                    <div class="emoji">🏢</div>
-                    BACnet/IP<br>
-                    <div class="description">Building Automation</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📨</div>
-                    MQTT<br>
-                    <div class="description">Pub/Sub Messaging</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🌐</div>
-                    REST/HTTP<br>
-                    <div class="description">HTTP Requests</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">⚡</div>
-                    WebSocket<br>
-                    <div class="description">Real-time Data</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">🔒</div>
-                    HTTPS/TLS<br>
-                    <div class="description">Secure Protocol</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📶</div>
-                    Modbus TCP/RTU<br>
-                    <div class="description">Industrial Protocol</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🔧</div>
-                    OPC UA<br>
-                    <div class="description">Interoperability</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🏠</div>
-                    KNX Protocol<br>
-                    <div class="description">Home Automation</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">📡</div>
-                    Zigbee<br>
-                    <div class="description">Wireless IoT</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📊</div>
-                    DNP3<br>
-                    <div class="description">Power Systems</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🌍</div>
-                    AMQP<br>
-                    <div class="description">Message Broker</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">☁️</div>
-                    CoAP<br>
-                    <div class="description">IoT Protocol</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">📋</div>
-                    JSON/XML<br>
-                    <div class="description">Data Format</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🔌</div>
-                    TCP/UDP Socket<br>
-                    <div class="description">Raw Socket</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">💻</div>
-                    SSH/Telnet<br>
-                    <div class="description">Remote Access</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🔐</div>
-                    MQTT Secure<br>
-                    <div class="description">MQTT over TLS</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">🎵</div>
-                    SNMP<br>
-                    <div class="description">Network Mgmt</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🔗</div>
-                    LonWorks<br>
-                    <div class="description">Control Network</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">⚙️</div>
-                    IEC 60870-5<br>
-                    <div class="description">Power Systems</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🌐</div>
-                    gRPC<br>
-                    <div class="description">RPC Framework</div>
-                </div>
-            </div>
-            <div class="row" style="margin-top: 15px;">
-                <div class="box protocol-box">
-                    <div class="emoji">📱</div>
-                    LoRaWAN<br>
-                    <div class="description">Long Range IoT</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">🛰️</div>
-                    NB-IoT/LTE-M<br>
-                    <div class="description">Cellular IoT</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📶</div>
-                    Bluetooth/BLE<br>
-                    <div class="description">Wireless</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box protocol-box">
-                    <div class="emoji">📡</div>
-                    6LoWPAN<br>
-                    <div class="description">IPv6 over LoWPAN</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 5: CLOUD -->
-            <div class="section-title">☁️ Layer 5: Cloud Deployment Platforms</div>
-            <div class="row">
-                <div class="box cloud-box">
-                    <div class="emoji">☁️</div>
-                    AWS<br>
-                    <div class="description">EC2 + RDS + S3</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box cloud-box">
-                    <div class="emoji">☁️</div>
-                    Google Cloud<br>
-                    <div class="description">Compute + SQL</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box cloud-box">
-                    <div class="emoji">🐳</div>
-                    Docker<br>
-                    <div class="description">Containers</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 6: DATABASE & API -->
-            <div class="section-title">💾 Layer 6: Database & Application Layer</div>
-            <div class="row">
-                <div class="box app-box">
-                    <div class="emoji">💾</div>
-                    Database<br>
-                    <div class="description">PostgreSQL/MongoDB</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box app-box">
-                    <div class="emoji">⚡</div>
-                    Backend API<br>
-                    <div class="description">REST/WebSocket</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box app-box">
-                    <div class="emoji">📊</div>
-                    Dashboard<br>
-                    <div class="description">Real-time Data</div>
-                </div>
-            </div>
-
-            <div class="arrow">⬇️</div>
-
-            <!-- STEP 7: MOBILE & WEB -->
-            <div class="section-title">📱 Layer 7: User Access - Mobile & Web Applications</div>
-            <div class="row">
-                <div class="box mobile-box">
-                    <div class="emoji">🍎</div>
-                    iOS App<br>
-                    <div class="description">Mobile Access</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box mobile-box">
-                    <div class="emoji">🤖</div>
-                    Android App<br>
-                    <div class="description">Mobile Access</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box mobile-box">
-                    <div class="emoji">🌐</div>
-                    Web Browser<br>
-                    <div class="description">Responsive Web</div>
-                </div>
-                <div class="horizontal-arrow">→</div>
-                <div class="box mobile-box">
-                    <div class="emoji">📲</div>
-                    Tablet App<br>
-                    <div class="description">Touch Interface</div>
-                </div>
-            </div>
-
-            <div class="arrow">✅</div>
-
-            <div class="success-message">
-                🎉 Complete Data Flow: Devices → JACE → Node-RED → Protocols → Cloud → API → Mobile/Web ✅<br>
-                <span style="font-size: 14px; margin-top: 10px; display: block; opacity: 0.9;">Enterprise-Grade BMS Ready for Production Deployment</span>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
+                    <div class="description">Intelligent<br
